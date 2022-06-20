@@ -15,3 +15,11 @@
         </div>
     </section>
 </template>
+
+<style>
+.ui.button,
+.dot.circle.icon {
+    background-color: #ff5a5f;
+    color: white;
+}
+</style>
