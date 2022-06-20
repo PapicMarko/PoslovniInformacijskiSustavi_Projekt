@@ -22,8 +22,8 @@ export default {
         locatorButtonPressed() {
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
-                    console.log(postition.coords.latitude);
-                    console.log(postition.coords.longtitude);
+                    console.log(position.coords.latitude);
+                    console.log(position.coords.longitude);
                 },
                 error => {
                     console.log(error.message);
