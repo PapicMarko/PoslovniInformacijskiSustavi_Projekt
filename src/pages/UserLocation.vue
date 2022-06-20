@@ -1,19 +1,27 @@
 <template>
-    <section class="ui two column centered grid">
+<div>
+    <section class="ui two column centered grid" style="position:relative;z-index:1;">
         <div class="column red">
             <form class="ui segment large form">
                 <div class="ui message red" v-show="error">{{error}}</div>
-                <div class="ui segment"></div>
+                <div class="ui segment">
                     <div class="field">
                        <div class="ui right icon input large" :class="{loading:spinner}">
-                            <input type="text" placeholder="Enter your address" v-model="address" />
+                            <input 
+                                type="text" 
+                                placeholder="Enter your address" 
+                                v-model="address" 
+                            />
                             <i class="dot circle link icon" @click="locatorButtonPressed"></i>
                        </div>
                     </div>
                     <button class="ui button">GO</button>
+                </div>
             </form>
         </div>
     </section>
+    <section id="map"></section>
+</div>
 </template>
 
 
@@ -28,8 +36,9 @@ export default {
             address: "",
             error: "",
             spinner: false
-        }
+        };
     },
+
 
     methods : {
         locatorButtonPressed() {
@@ -39,10 +48,10 @@ export default {
                 navigator.geolocation.getCurrentPosition(
                     position => {
                         this.getAddressFrom(position.coords.latitude, position.coords.longitude)
-        
+                        this.showUserLocationOnTheMap(position.coords.latitude, position.coords.longitude)
                     },
                     error => {
-                        this.error="Molim Vas upišite adresu manualno";
+                        this.error="Molim Vas upišite adresu.";
                         this.spinner=false;
                         //console.log(error.message);
                     }
@@ -73,6 +82,13 @@ export default {
                 console.log(error.message);
             })
 
+        },
+        showUserLocationOnTheMap(latitude,longitude) {
+            let map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: new google.maps.LatLng(latitude,longitude),
+                mapTypeId:google.maps.MapTypeId.ROADMAP
+            })
         }
     }
 }
@@ -83,4 +99,14 @@ export default {
     background-color: #ff5a5f;
     color: white;
 }
+
+#map {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: red;
+}
+
 </style>
