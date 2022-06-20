@@ -2,7 +2,7 @@
     <section class="ui two column centered grid">
         <div class="column red">
             <form class="ui segment large form">
-                <div class="ui message red"></div>
+                <div class="ui message red" v-show="error">{{error}}</div>
                 <div class="ui segment"></div>
                     <div class="field">
                        <div class="ui right icon input large">
@@ -39,10 +39,12 @@ export default {
         
                     },
                     error => {
-                        console.log(error.message);
+                        this.error=error.message;
+                        //console.log(error.message);
                     }
                 );
             } else {
+                this.error=error.message;
                 console.log("Your browser does not support geolocation API");
             }
         },
@@ -51,6 +53,7 @@ export default {
             axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyCc_CY_DWbBD8xWnZALfvX2Fhi8vTpvZes")
             .then(response => {
                 if(response.data.error_message){
+                    this.error=response.data.error_message;
                     console.log(response.data.error_message);
                 } else {
                     this.address=response.data.results[0].formatted_address
@@ -58,6 +61,7 @@ export default {
                 }
             })
             .catch(error => {
+                this.error= error.message;
                 console.log(error.message);
             })
 
