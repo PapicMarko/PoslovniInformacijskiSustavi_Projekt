@@ -6,7 +6,7 @@
                 <div class="ui segment"></div>
                     <div class="field">
                        <div class="ui right icon input large">
-                            <input type="text" placeholder="Enter your address" />
+                            <input type="text" placeholder="Enter your address" v-model="address" />
                             <i class="dot circle link icon" @click="locatorButtonPressed"></i>
                        </div>
                     </div>
@@ -16,29 +16,55 @@
     </section>
 </template>
 
+
 <script>
+
+import axios from 'axios'
+
 export default {
+
+    data(){
+        return {
+            address: "",
+            error: ""
+        }
+    },
+
     methods : {
         locatorButtonPressed() {
             if(navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    console.log(position.coords.latitude);
-                    console.log(position.coords.longitude);
-                },
-                error => {
-                    console.log(error.message);
-                }
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        this.getAddressFrom(position.coords.latitude, position.coords.longitude)
+        
+                    },
+                    error => {
+                        console.log(error.message);
+                    }
                 );
-
             } else {
                 console.log("Your browser does not support geolocation API");
             }
+        },
+
+        getAddressFrom(lat, long) {
+            axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyCc_CY_DWbBD8xWnZALfvX2Fhi8vTpvZes")
+            .then(response => {
+                if(response.data.error_message){
+                    console.log(response.data.error_message);
+                } else {
+                    this.address=response.data.results[0].formatted_address
+                    //console.log(response.data.results[0].formatted_address);
+                }
+            })
+            .catch(error => {
+                console.log(error.message);
+            })
+
         }
     }
 }
 </script>
-
-
 <style>
 .ui.button,
 .dot.circle.icon {
