@@ -42,7 +42,12 @@ export default {
 
     mounted() {
         new google.maps.places.Autocomplete(
-            document.getElementById("autocomplete")
+            document.getElementById("autocomplete"),
+            {
+                bounds: new google.maps.LatLngBounds(
+                    new google.maps.LatLng(44.86833, 13.84806)
+                )
+            }
         )
     },
 
