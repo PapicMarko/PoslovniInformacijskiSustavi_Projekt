@@ -21,6 +21,14 @@ export default {
     methods : {
         locatorButtonPressed() {
             if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    console.log(postition.coords.latitude);
+                    console.log(postition.coords.longtitude);
+                },
+                error => {
+                    console.log(error.message);
+                }
+                );
 
             } else {
                 console.log("Your browser does not support geolocation API");
