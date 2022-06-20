@@ -121,4 +121,23 @@ export default {
     background: red;
 }
 
+.pac-icon{
+    display:none;
+}
+
+.pac-item{
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.pac-item:hover {
+    background-color: cadetblue;
+}
+
+.pac-item-quary {
+    font-size: 16px;
+}
+
+
 </style>
