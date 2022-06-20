@@ -5,7 +5,7 @@
                 <div class="ui message red" v-show="error">{{error}}</div>
                 <div class="ui segment"></div>
                     <div class="field">
-                       <div class="ui right icon input large">
+                       <div class="ui right icon input large" :class="{loading:spinner}">
                             <input type="text" placeholder="Enter your address" v-model="address" />
                             <i class="dot circle link icon" @click="locatorButtonPressed"></i>
                        </div>
@@ -26,12 +26,15 @@ export default {
     data(){
         return {
             address: "",
-            error: ""
+            error: "",
+            spinner: false
         }
     },
 
     methods : {
         locatorButtonPressed() {
+
+            this.spinner=true;
             if(navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     position => {
@@ -39,14 +42,17 @@ export default {
         
                     },
                     error => {
-                        this.error=error.message;
+                        this.error="Molim Vas upišite adresu manualno";
+                        this.spinner=false;
                         //console.log(error.message);
                     }
                 );
             } else {
                 this.error=error.message;
+                this.spinner=false;
                 console.log("Your browser does not support geolocation API");
             }
+
         },
 
         getAddressFrom(lat, long) {
@@ -59,9 +65,11 @@ export default {
                     this.address=response.data.results[0].formatted_address
                     //console.log(response.data.results[0].formatted_address);
                 }
+                this.spinner=false;
             })
             .catch(error => {
                 this.error= error.message;
+                this.spinner=false;
                 console.log(error.message);
             })
 
