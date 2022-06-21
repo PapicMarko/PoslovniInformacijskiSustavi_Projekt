@@ -4,6 +4,7 @@ from folium.plugins import MarkerCluster
 import pandas as pd
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from pymongo import pymongo
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URL'] = 'sqlite:///test.db'
@@ -39,3 +40,7 @@ my_map = folium.Map(location=pula, zoom_start=13)
 my_map
 
 """
+
+client = pymongo.MongoClient(
+    "mongodb+srv://maliZeus:<password>@backenddatabase.cxfv0qt.mongodb.net/?retryWrites=true&w=majority", server_api=ServerApi('1'))
+db = client.test
