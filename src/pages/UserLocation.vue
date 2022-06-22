@@ -1,6 +1,6 @@
 <template>
 <div>
-    <section class="ui two column centered grid" style="position:relative;z-index:1;">
+    <section class="ui two column centered grid" style="position:relative; z-index:1;">
         <div class="column red">
             <form class="ui segment large form">
                 <div class="ui message red" v-show="error">{{error}}</div>
@@ -27,8 +27,9 @@
 
 
 <script>
-
 import axios from 'axios'
+
+
 
 export default {
 
@@ -40,32 +41,66 @@ export default {
         };
     },
 
-    mounted() {
+    
+
+/*     mounted() {
         new google.maps.places.Autocomplete(
             document.getElementById("autocomplete"),
-            {
+                {
                 bounds: new google.maps.LatLngBounds(
                     new google.maps.LatLng(44.86833, 13.84806)
                 )
-            }
+            }    
         )
-    },
+    },  */
 
 
     methods : {
+
+            getAddressFrom(lat, long) {
+                axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyCc_CY_DWbBD8xWnZALfvX2Fhi8vTpvZes")
+                .then(response => {
+                    if(response.data.error_message){
+                        this.error=response.data.error_message;
+                        console.log(response.data.error_message);
+
+                    } else {
+                        this.address=response.data.results[0].formatted_address
+                        console.log(response.data.results[0].formatted_address);
+                   
+
+                    }
+                    this.spinner=false;
+                })
+                .catch(error => {
+                    this.error= error.message;
+                    this.spinner=false;
+                    console.log(error.message);
+                })
+
+            },
+
+
+
+
         locatorButtonPressed() {
 
             this.spinner=true;
-            if(navigator.geolocation) {
+            if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     position => {
-                        this.getAddressFrom(position.coords.latitude, position.coords.longitude)
+                        console.log(position.coords.latitude),
+                        console.log(position.coords.longitude),
+                        this.getAddressFrom(
+                            position.coords.latitude,
+                            position.coords.longitude
+                        );
                         this.showUserLocationOnTheMap(position.coords.latitude, position.coords.longitude)
                     },
                     error => {
                         this.error="Molim Vas upišite adresu.";
                         this.spinner=false;
-                        //console.log(error.message);
+                        console.log(error.message);
                     }
                 );
             } else {
@@ -76,15 +111,18 @@ export default {
 
         },
 
-        getAddressFrom(lat, long) {
+/*         getAddressFrom(lat, long) {
             axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyCc_CY_DWbBD8xWnZALfvX2Fhi8vTpvZes")
             .then(response => {
                 if(response.data.error_message){
                     this.error=response.data.error_message;
                     console.log(response.data.error_message);
+
                 } else {
                     this.address=response.data.results[0].formatted_address
-                    //console.log(response.data.results[0].formatted_address);
+                    console.log(response.data.results[0].formatted_address);
+                   
+
                 }
                 this.spinner=false;
             })
@@ -94,8 +132,20 @@ export default {
                 console.log(error.message);
             })
 
-        },
-        showUserLocationOnTheMap(latitude,longitude) {
+        }, */
+
+/*         mounted() {
+        new google.maps.places.Autocomplete(
+            document.getElementById("autocomplete"),
+                {
+                bounds: new google.maps.LatLngBounds(
+                    new google.maps.LatLng(44.86833, 13.84806)
+                    )
+                }    
+            )
+        }, */
+
+       showUserLocationOnTheMap(latitude,longitude) {
             let map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 15,
                 center: new google.maps.LatLng(latitude,longitude),
@@ -103,7 +153,7 @@ export default {
             })
         }
     }
-}
+} 
 </script>
 <style>
 .ui.button,
@@ -118,7 +168,7 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    background: red;
+    background: rgba(177, 224, 238, 0.767);
 }
 
 .pac-icon{
@@ -138,6 +188,8 @@ export default {
 .pac-item-quary {
     font-size: 16px;
 }
+
+
 
 
 </style>
