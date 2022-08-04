@@ -30,6 +30,9 @@
 import axios from 'axios'
 var pok3;
 var pok4;
+var longitude;
+var latitude;
+var map;
 export default {
     data(){
         return {
@@ -70,8 +73,8 @@ export default {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     position => {
-                        //console.log(position.coords.latitude),
-                        //console.log(position.coords.longitude),
+                        console.log(position.coords.latitude),
+                        console.log(position.coords.longitude),
                         position.coords.latitude,
                         position.coords.longitude,
                         //pok3 = position.coords.latitude,
@@ -84,7 +87,7 @@ export default {
                             position.coords.latitude,
                             position.coords.longitude
                         );
-                        this.showUserLocationOnTheMap(position.coords.latitude, position.coords.longitude)
+                        window.showUserLocationOnTheMap=this.showUserLocationOnTheMap(position.coords.latitude, position.coords.longitude)
                     },
 
                     
@@ -136,14 +139,17 @@ export default {
             )
         }, */
 
-        showUserLocationOnTheMap(latitude, longitude, google) {
+        showUserLocationOnTheMap(latitude, longitude) {
 /*             pok3=pok1
             pok4=this.pok2; */
-            let map = new google.maps.Map(document.getElementById("map"),  {
+            map = new google.maps.Map(document.getElementById("map"),  {
                 zoom: 15,
                 center: new google.maps.LatLng(latitude,longitude),
                 mapTypeId: google.maps.MapTypeId.ROADMAP    
             });
+
+            
+
         } 
     }
 };
